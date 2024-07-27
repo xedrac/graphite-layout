@@ -70,12 +70,20 @@ uninstall_layout() {
 
 verify_user_is_root() {
     if [ ! "${EUID:-$(id -u)}" -eq 0 ]; then
-        echo "This script must unfortunately be run with sudo";
+        echo "This script must unfortunately be run with sudo"
+        exit 1
+    fi
+}
+
+verify_tools_available() {
+    if ! command -v xsltproc >/dev/null 2>&1; then
+        echo "This script requires that xsltproc is available.  Please install it first."
         exit 1
     fi
 }
 
 
+verify_tools_available
 verify_user_is_root
 uninstall_layout
 install_layout
